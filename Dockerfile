@@ -17,7 +17,8 @@ COPY . .
 RUN bunx prisma generate
 
 # 安装并构建Tailwind CSS
-RUN bunx tailwindcss -i ./src/public/css/styles.css -o ./src/public/css/tailwind.css --minify
+RUN bun add tailwindcss@4.0.9 && \
+    bunx tailwindcss -i ./src/public/css/styles.css -o ./src/public/css/tailwind.css --minify
 
 # 暴露端口
 EXPOSE 3000
