@@ -4,8 +4,8 @@ FROM oven/bun:1.2.4-slim
 # 设置工作目录
 WORKDIR /app
 
-# 复制package.json和bun.lockb
-COPY package.json bun.lockb ./
+# 复制package.json
+COPY package.json ./
 
 # 安装依赖
 RUN bun install --frozen-lockfile
