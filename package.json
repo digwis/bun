@@ -1,0 +1,32 @@
+{
+  "name": "elysia-project",
+  "module": "index.ts",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "bun run index.ts",
+    "start": "bun run index.ts",
+    "css": "bunx tailwindcss -i ./src/public/css/styles.css -o ./src/public/css/tailwind.css",
+    "db:migrate": "bunx prisma migrate dev",
+    "db:generate": "bunx prisma generate",
+    "db:studio": "bunx prisma studio"
+  },
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "dependencies": {
+    "@elysiajs/cookie": "^0.8.0",
+    "@elysiajs/html": "^1.2.0",
+    "@elysiajs/static": "^1.2.0",
+    "@kitajs/ts-html-plugin": "^4.1.1",
+    "@prisma/client": "^6.4.1",
+    "@types/jsonwebtoken": "^9.0.9",
+    "elysia": "1.2.22",
+    "jsonwebtoken": "^9.0.2",
+    "prisma": "6.4.1",
+    "tailwindcss": "4.0.9"
+  }
+}

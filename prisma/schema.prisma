@@ -1,0 +1,123 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// 用户模型
+model User {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  username  String
+  password  String
+  avatar    String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  comments  Comment[]
+  ratings   Rating[]
+}
+
+// 电影模型
+model Movie {
+  id           Int      @id @default(autoincrement())
+  title        String
+  description  String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  year         Int
+  director     String
+  posterUrl    String
+  videoUrl     String?
+  downloadUrl  String?
+  downloadCode String?
+
+  // 评分系统
+  rating      Float    @default(0)
+  ratingCount Int      @default(0)
+
+  // 关系
+  comments    Comment[]
+  ratings     Rating[]
+  collections CollectionMovie[]
+  behindScenes BehindScene[]
+}
+
+// 评论模型
+model Comment {
+  id        Int      @id @default(autoincrement())
+  content   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // 关系
+  movieId   Int
+  movie     Movie    @relation(fields: [movieId], references: [id])
+  userId    Int?
+  user      User?    @relation(fields: [userId], references: [id])
+}
+
+// 评分模型
+model Rating {
+  id        Int      @id @default(autoincrement())
+  score     Float
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // 关系
+  movieId   Int
+  movie     Movie    @relation(fields: [movieId], references: [id])
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id])
+
+  // 每个用户对每部电影只能评分一次
+  @@unique([userId, movieId])
+}
+
+// 合集模型
+model Collection {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String?
+  coverUrl    String
+  sortOrder   Int      @default(0)
+  status      String   @default("draft") // draft, published
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // 关系
+  movies CollectionMovie[]
+}
+
+// 合集-电影关联表
+model CollectionMovie {
+  collectionId Int
+  collection   Collection @relation(fields: [collectionId], references: [id])
+  movieId      Int
+  movie        Movie      @relation(fields: [movieId], references: [id])
+  sortOrder    Int        @default(0)
+
+  @@id([collectionId, movieId])
+}
+
+// 幕后花絮模型
+model BehindScene {
+  id        Int      @id @default(autoincrement())
+  title     String
+  content   String
+  imageUrl  String
+  sortOrder Int      @default(0)
+  status    String   @default("draft") // draft, published
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // 关系
+  movieId   Int
+  movie     Movie    @relation(fields: [movieId], references: [id])
+}
