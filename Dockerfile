@@ -16,8 +16,11 @@ COPY . .
 # 生成Prisma客户端
 RUN bunx prisma generate
 
+# 安装全局tailwindcss
+RUN npm install -g tailwindcss
+
 # 构建Tailwind CSS
-RUN bunx tailwindcss -i ./src/public/css/styles.css -o ./src/public/css/tailwind.css --minify
+RUN tailwindcss -i ./src/public/css/styles.css -o ./src/public/css/tailwind.css --minify
 
 # 暴露端口
 EXPOSE 3000
