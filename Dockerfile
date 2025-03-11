@@ -23,4 +23,4 @@ RUN bun add tailwindcss@4.0.9
 EXPOSE 3000
 
 # 启动应用（包含CSS构建）
-CMD ["sh", "-c", "bunx tailwindcss -i ./src/public/css/styles.css -o ./src/public/css/tailwind.css --minify && bun run start"]
+CMD ["sh", "-c", "mkdir -p ./src/public/css && bunx tailwindcss -i ./src/public/css/styles.css -o ./src/public/css/tailwind.css --minify && bun run start"]
