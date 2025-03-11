@@ -16,12 +16,11 @@ COPY . .
 # 生成Prisma客户端
 RUN bunx prisma generate
 
-# 安装并构建Tailwind CSS
-RUN bun add tailwindcss@4.0.9 && \
-    bunx tailwindcss -i ./src/public/css/styles.css -o ./src/public/css/tailwind.css --minify
+# 安装Tailwind CSS
+RUN bun add tailwindcss@4.0.9
 
 # 暴露端口
 EXPOSE 3000
 
-# 启动应用
-CMD ["bun", "run", "start"]
+# 启动应用（包含CSS构建）
+CMD ["sh", "-c", "bunx tailwindcss -i ./src/public/css/styles.css -o ./src/public/css/tailwind.css --minify && bun run start"]
